@@ -13,6 +13,9 @@ if __name__ == '__main__':
     rd.read_data_from_xls(DataFilePath, FileName)
 
     boxplot = sp.seaborn_box_plot(rd.origin_data, x_label='开始小时', y_label='收益',
-                                  title='在机场内一小时的平均收益随时间段变化图')
+                                  title='在机场内一小时的平均收益随时间段变化图',
+                                  hue_label='机场单', y_range=(0, 65)
+                                  , background_style="whitegrid")
+    boxplot.plot()
 
     input()

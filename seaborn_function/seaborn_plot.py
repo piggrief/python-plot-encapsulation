@@ -30,27 +30,51 @@ class seaborn_box_plot:
     """
     seaborn的箱线图绘图常用封装
     """
-    def __init__(self, data, x_label, y_label, title):
+    def __init__(self, data, x_label, y_label, title, hue_label=[], font_size=18,
+                 x_range=[], y_range=[], palette=[], background_style=[]):
         """
         构造函数
         """
         self.origin_data = data
         self.x_label = x_label
         self.y_label = y_label
+        self.hue_label = hue_label
+        self.font_size = font_size
         self.title = title
-        sns.set(font='SimHei')  # 解决Seaborn中文显示问题
+        self.x_range = x_range
+        self.y_range = y_range
+        self.palette = palette
+
+        if [] != background_style:
+            sns.set(style=background_style, font='SimHei')
 
     def plot(self):
         f, ax = plt.subplots()
         # ax = plt.subplot(2, 1, 1)
-        sns.boxplot(x=self.x_label, y=self.y_label, data=self.origin_data)
-        ax.set_title(self.title, fontsize=15)
+        if not self.hue_label:
+            if [] == self.palette:
+                sns.boxplot(x=self.x_label, y=self.y_label, data=self.origin_data)
+            else:
+                sns.boxplot(x=self.x_label, y=self.y_label, data=self.origin_data,
+                            palette=self.palette)
+        else:
+            if [] == self.palette:
+                sns.boxplot(x=self.x_label, y=self.y_label, hue=self.hue_label
+                            , data=self.origin_data)
+            else:
+                sns.boxplot(x=self.x_label, y=self.y_label, hue=self.hue_label
+                            , data=self.origin_data, palette=self.palette)
+        ax.set_title(self.title, fontsize=self.font_size)
 
-        ax.set_xlabel(self.x_label, fontsize=15)
-        ax.set_ylabel(self.y_label, fontsize=15)
-        # plt.ylim((-18, 80.0))
-        plt.yticks(fontproperties='Times New Roman', size=15)
-        plt.xticks(fontproperties='Times New Roman', size=15)
+        ax.set_xlabel(self.x_label, fontsize=self.font_size)
+        ax.set_ylabel(self.y_label, fontsize=self.font_size)
+        if self.x_range:
+            plt.xlim(self.x_range)
+        if self.y_range:
+            plt.ylim(self.y_range)
+
+        plt.yticks(fontproperties='Times New Roman', size=self.font_size)
+        plt.xticks(fontproperties='Times New Roman', size=self.font_size)
 
         plt.show()
 
