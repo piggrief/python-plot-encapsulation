@@ -66,7 +66,7 @@ class plot_with_seaborn:
         if [] != background_style:
             sns.set(style=background_style, font='SimHei')
 
-    def boxplot(self, if_show):
+    def boxplot(self, if_show=True):
         """
         根据定义的参数绘制箱线图
         :param if_show:是否直接显示，True的话会直接调用plt.show()，
@@ -122,9 +122,9 @@ class plot_with_seaborn:
         else:
             return plt
 
-    def violinplot(self, if_show, split=True):
+    def violinplot(self, if_show=True, split=True):
         """
-        根据定义的参数绘制箱线图
+        根据定义的参数绘制小提琴图
         :param if_show:是否直接显示，True的话会直接调用plt.show()，
                                      False的话会返回plt句柄
         :param split:如果有分组的话是否对半拼接显示
@@ -179,3 +179,60 @@ class plot_with_seaborn:
         else:
             return plt
 
+    def stripplot(self, if_show=True, if_jitter=True, split=True):
+        """
+        根据定义的参数绘制散点图
+        :param if_show:是否直接显示，True的话会直接调用plt.show()，
+                                     False的话会返回plt句柄
+        :param if_jitter:是否散开显示，用在x轴的指是离散量上，使得显示更清晰
+        :param split:如果有分组的话是否拆开显示
+        :return:plt句柄，可用于后续对图表的自定义修改
+        """
+        f, ax = plt.subplots()
+        # ax = plt.subplot(2, 1, 1)
+        if not self.hue_label:
+            if [] == self.palette:
+                if [] == self.order:
+                    sns.stripplot(x=self.x_label, y=self.y_label, data=self.origin_data, jitter=if_jitter)
+                else:
+                    sns.stripplot(x=self.x_label, y=self.y_label, data=self.origin_data,
+                                  order=self.order, jitter=if_jitter)
+            else:
+                if [] == self.order:
+                    sns.stripplot(x=self.x_label, y=self.y_label, data=self.origin_data,
+                                  palette=self.palette, jitter=if_jitter)
+                else:
+                    sns.stripplot(x=self.x_label, y=self.y_label, data=self.origin_data,
+                                  palette=self.palette, order=self.order, jitter=if_jitter)
+        else:
+            if [] == self.palette:
+                if [] == self.order:
+                    sns.stripplot(x=self.x_label, y=self.y_label, hue=self.hue_label,
+                                  data=self.origin_data, split=split, jitter=if_jitter)
+                else:
+                    sns.stripplot(x=self.x_label, y=self.y_label, hue=self.hue_label,
+                                  data=self.origin_data, order=self.order, split=split, jitter=True)
+            else:
+                if [] == self.order:
+                    sns.stripplot(x=self.x_label, y=self.y_label, hue=self.hue_label,
+                                  data=self.origin_data, palette=self.palette, split=split, jitter=if_jitter)
+                else:
+                    sns.stripplot(x=self.x_label, y=self.y_label, hue=self.hue_label, split=split,
+                                  data=self.origin_data, palette=self.palette, order=self.order, jitter=if_jitter)
+        ax.set_title(self.title, fontsize=self.font_size)
+
+        ax.set_xlabel(self.x_label, fontsize=self.font_size)
+        ax.set_ylabel(self.y_label, fontsize=self.font_size)
+        if self.x_range:
+            plt.xlim(self.x_range)
+        if self.y_range:
+            plt.ylim(self.y_range)
+
+        plt.yticks(fontproperties='Times New Roman', size=self.font_size)
+        plt.xticks(fontproperties='Times New Roman', size=self.font_size)
+
+        if if_show:
+            plt.show()
+            return []
+        else:
+            return plt

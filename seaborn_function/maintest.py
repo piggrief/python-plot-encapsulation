@@ -17,6 +17,6 @@ if __name__ == '__main__':
         title='在机场内一小时的平均收益随时间段变化图',
         hue_label='机场单', y_range=(0, 65)
         , background_style="whitegrid", order=[1.0, 2.0])
-    seaborn_plot.violinplot(False).show()
+    seaborn_plot.stripplot(if_show=False, if_jitter=True, split=False).show()
 
     input()
